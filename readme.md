@@ -64,4 +64,23 @@ option domain-name-servers 192.168.100.1; #le serveur sert aussi de serveur DNS
 ```
 
 4) Pour spécifier l'interface sur lequelle le serveur doit on va dans le fichier /etc/default/isc-dhcp-server et on met la ligne ```INTERFACEv4="ens224"```
-5) 
+5) On redemarre le serveur avec la commande ```systemctl restart isc-dhcp-server``` puis on vérifie qu'il fonctionne avec ```systemctl status isc-dhcp-server```
+6) Pour désactiver la carte réseau on utilise ```ip link set ens192 down```, on modifie le nom dans le fichier /etc/hosts et avec la commande utiliser avant.
+7) DHCPDiscover sert à détecter les serveurs DHCP disponible, DHCPOFFER permet de soummettre une adresse ip au client, DHCPREQUEST réponds au DHCPOFFER en en indiquant quel serveur à été choisi par le client, DHCPACK fait la procedure “IP address allocation/lease”.
+8) Le fichier dhcpd.lease permet de stocker l'assignement d'ip a des machines de manière temporaire.
+```dhcp-lease-list``` permet de lister les machines et leurs ip associer.
+9) J'utilise ```ping 192.168.100.1``` depuis le client et les ping fonctionnent bien.
+10) On ajoute dans le dossier /etc/dhcp/dhcp.conf 
+```
+deny unknown-clients;
+
+host client {
+  hardware ethernet 00:50:56:89:49:77
+  fixed-address 192.168.100.20
+}
+```
+
+## Exercice 4:
+---
+
+
