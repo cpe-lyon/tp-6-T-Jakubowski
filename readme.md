@@ -40,12 +40,12 @@ Je n'utiliserai pas le VLSM pour ces réseaux.
 1) On utilise la commande ```apt install isc-dhcp-server``` pour installer le paquet, et on voit bien qu'il ne fonctionne pas comme il n'est pas configuré
 2) Pour changer l'adresse ip de manière permanente il faut changer la configuration du netplan, 
 ```network :
-v e r si o n : 2
-rende re r : networkd
-e th e rn e ts :
+version : 2
+renderer : networkd
+ethernets :
 ens224 :
 addresses :
-− 1 9 2 . 1 6 8 . 1 0 0 . 1 / 2 4
+− 192.168.100.1/2 4
 ```
 et modifier l'ip avec ```ip addr add 192.168.1.100/24 dev ens224```
 3) On met la config dans le fichier dhcpd.conf
@@ -83,4 +83,13 @@ host client {
 ## Exercice 4:
 ---
 
+1) Pour pouvoir communiquer en dehors qu'en local, on décommente la ligne ```net.ipv4.ip_forward=1``` dans le fichier /etc/sysctl.conf puis on utilise la commande ```sudo sysctl -p /etc/sysctl.conf``` pour que les changements soit pris en compte.
+2) J'utilise la commande ```sudo iptables --table nat --append POSTROUTING --out-interface enp0s3 -j MASQUERADE``` pour pouvoir traduire les adresses.
+Le ping 1.1.1.1 fonctionne bien.
 
+## Exercice 5:
+---
+
+1) On installe bind9 avec ```apt install bind9``` puis on regarde si il fonctionne avec ```systemctl status bind9```
+2) On va dans le fichier /etc/bind/named.conf/options et on décommente forwarder en ajoutant les ip 1.1.1.1 et 8.8.8.8 dedans et on le redémarre avec la commande ```systemctl restart bind9```
+3) 
