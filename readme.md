@@ -36,3 +36,32 @@ Je n'utiliserai pas le VLSM pour ces réseaux.
 
 ## Exercice 3:
 ---
+
+1) On utilise la commande ```apt install isc-dhcp-server``` pour installer le paquet, et on voit bien qu'il ne fonctionne pas comme il n'est pas configuré
+2) Pour changer l'adresse ip de manière permanente il faut changer la configuration du netplan, 
+```network :
+v e r si o n : 2
+rende re r : networkd
+e th e rn e ts :
+ens224 :
+addresses :
+− 1 9 2 . 1 6 8 . 1 0 0 . 1 / 2 4
+```
+et modifier l'ip avec ```ip addr add 192.168.1.100/24 dev ens224```
+3) On met la config dans le fichier dhcpd.conf
+```
+default-lease-time 120;
+max-lease-time 600;
+authoritative; #DHCP officiel pour notre réseau
+option broadcast-address 192.168.100.255; #informe les clients de l'adresse de broadcast
+option domain-name "tpadmin.local"; #tous les hôtes qui se connectent au
+#réseau auront ce nom de domaine
+subnet 192.168.100.0 netmask 255.255.255.0 { #configuration du sous-réseau 192.168.100.0
+range 192.168.100.100 192.168.100.240; #pool d'adresses IP attribuables
+option routers 192.168.100.1; #le serveur sert de passerelle par défaut
+option domain-name-servers 192.168.100.1; #le serveur sert aussi de serveur DNS
+}
+```
+
+4) Pour spécifier l'interface sur lequelle le serveur doit on va dans le fichier /etc/default/isc-dhcp-server et on met la ligne ```INTERFACEv4="ens224"```
+5) 
