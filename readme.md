@@ -92,4 +92,29 @@ Le ping 1.1.1.1 fonctionne bien.
 
 1) On installe bind9 avec ```apt install bind9``` puis on regarde si il fonctionne avec ```systemctl status bind9```
 2) On va dans le fichier /etc/bind/named.conf/options et on décommente forwarder en ajoutant les ip 1.1.1.1 et 8.8.8.8 dedans et on le redémarre avec la commande ```systemctl restart bind9```
-3) 
+3) La commande ```ping www.google.fr``` fonctionne.
+4) On utilise la commande ```lynx www.wikipedia.org``` pour pouvoir aller sur le site en ligne de commande.
+
+## Exercice 6:
+---
+
+1) J'ajoute les ligne 
+```
+zone "tpadmin.local" IN {
+type master;
+file "/etc/bind/db.tpadmin.local";
+};
+```
+dans le fichier /etc/bind/named.conf.options comme demander.
+2) On échange 2 fois localhost par tpadmin dans le fichier /etc/bind/db.admin.local
+3) On ajoute dans le fichier named.conf.local 
+```
+zone "100.168.192.in-addr.arpa" {
+type master;
+file "/etc/bind/db.192.168.100";
+};
+```
+4)
+
+
+
